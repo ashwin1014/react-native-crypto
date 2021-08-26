@@ -7,12 +7,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useFocusEffect } from "@react-navigation/native"
 
 import MainLayout from './MainLayout';
-import BalanceInfo from './BalanceInfo';
+import {BalanceInfo, IconTextButton, Chart} from '../components';
 import {SIZES, COLORS, FONTS, dummyData, icons } from '../constants';
 
 import { getCoinMarket, getHoldings } from '../stores/market/marketActions';
 
-const WalletInfoSection = () => {
+const WalletInfoSection = ({totalWallet, changePct}) => {
 
   return (
     <View style={{
@@ -22,7 +22,33 @@ const WalletInfoSection = () => {
       backgroundColor: COLORS.gray
     }}>
       {/* Balance Info */}
-      <BalanceInfo title="Your Wallet" displayAmount="45,000" changePct="2.30" containerStyle={{ marginTop: 50 }} />
+      <BalanceInfo title="Your Wallet" displayAmount={totalWallet} changePct={changePct} containerStyle={{ marginTop: 50 }} />
+      <View style={{
+        flexDirection: 'row',
+        marginTop: 30,
+        marginBottom: -15,
+        paddingHorizontal: SIZES.radius
+      }}>
+        <IconTextButton
+          label="Transfer"
+          icon={icons.send}
+          containerStyle={{
+            flex: 1,
+            height: 40,
+            marginRight: SIZES.radius
+          }}
+          // onPress={}
+        />
+        <IconTextButton
+          label="Withdraw"
+          icon={icons.withdraw}
+          containerStyle={{
+            flex: 1,
+            height: 40
+          }}
+          // onPress={}
+        />
+      </View>
     </View>
   );
 }
@@ -44,6 +70,10 @@ const Home = () => {
     }, [])
   );
 
+  const totalWallet = myHoldings.reduce((a, b) => a + (b.total || 0), 0);
+  const valueChange = myHoldings.reduce((a, b) => a + (b.holding_value_change_7d || 0), 0);
+  const changePct = valueChange / (totalWallet - valueChange) * 100;
+
 
     return (
         <MainLayout>
@@ -53,7 +83,13 @@ const Home = () => {
            }}>
             {/* Header */}
             {/* Wallet */}
-            <WalletInfoSection />
+            <WalletInfoSection totalWallet={totalWallet} changePct={changePct} />
+            <Chart
+              containerStyle={{
+                marginTop: SIZES.padding * 2
+              }}
+              chartPrices={coins[0]?.sparkline_in_7d?.price}
+            />
           </View>
        </MainLayout>
     )

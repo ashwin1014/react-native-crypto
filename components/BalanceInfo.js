@@ -14,7 +14,7 @@ const BalanceInfo = ({ title, displayAmount, changePct, containerStyle={} }) => 
                 alignItems: 'flex-end'
             }}>
                 <Text style={{ ...FONTS.h3, color: COLORS.lightGray3 }}>$</Text>
-                <Text style={{ ...FONTS.h2, color: COLORS.white, marginLeft: SIZES.base }}>{displayAmount.toLocaleString()}</Text>
+                <Text style={{ ...FONTS.h2, color: COLORS.white, marginLeft: SIZES.base }}>{Number(displayAmount.toLocaleString()).toFixed(2)}</Text>
                 <Text style={{ ...FONTS.h3, color: COLORS.lightGray3 }}>USD</Text>
             </View>
 
