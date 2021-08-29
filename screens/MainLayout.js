@@ -1,5 +1,5 @@
 import React from 'react'
-import { SafeAreaView , Animated } from 'react-native'
+import { Animated, View } from 'react-native'
 import { useSelector } from 'react-redux';
 
 import { COLORS, SIZES, icons } from '../constants';
@@ -34,35 +34,42 @@ const MainLayout = ({ children }) => {
 
     return (
        <>
-            <SafeAreaView  style={{
+            <View  style={{
                 flex: 1
             }}>
                 {children}
 
-                <Animated.View
-                  style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      right: 0,
-                      bottom: 0,
-                      backgroundColor: COLORS.transparentBlack
-                  }}
-                  opacity={modalAnimatedValue}
-                />
 
-                <Animated.View style={{
-                    position: 'absolute',
-                    left: 0,
-                    top: modalY,
-                    width: '100%',
-                    padding: SIZES.padding,
-                    backgroundColor: COLORS.primary
-                    }}>
-                    <IconTextButton label="Transfer" icon={icons.send} />
-                    <IconTextButton label="Withdraw" icon={icons.withdraw} containerStyle={{ marginTop: SIZES.base }} />
-                </Animated.View>
-            </SafeAreaView>
+            </View>
+           {
+               isTradeModalVisible && (
+                   <>
+                    <Animated.View
+                        style={{
+                            position: 'absolute',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            backgroundColor: COLORS.transparentBlack
+                        }}
+                        opacity={modalAnimatedValue}
+                        />
+
+                        <Animated.View style={{
+                            position: 'absolute',
+                            left: 0,
+                            top: modalY,
+                            width: '100%',
+                            padding: SIZES.padding,
+                            backgroundColor: COLORS.primary
+                            }}>
+                            <IconTextButton label="Transfer" icon={icons.send} />
+                            <IconTextButton label="Withdraw" icon={icons.withdraw} containerStyle={{ marginTop: SIZES.base }} />
+                        </Animated.View>
+                   </>
+               )
+           }
        </>
     )
 }
