@@ -7,7 +7,7 @@ import {
     TouchableOpacity
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { useFocusEffect } from "@react-navigation/native"
+import { useFocusEffect } from "@react-navigation/native";
 
 import MainLayout from './MainLayout';
 import {BalanceInfo, IconTextButton, Chart} from '../components';

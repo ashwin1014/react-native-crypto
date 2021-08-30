@@ -1,4 +1,4 @@
-import React, {useCallback} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
     View,
     FlatList,
@@ -46,6 +46,8 @@ const Portfolio = () => {
 
   const myHoldings = useSelector(state => state.marketReducer.myHoldings);
 
+  const [selectedCoin, setSelectedCoin] = useState();
+
   useFocusEffect(
     useCallback(() => {
       dispatch(getHoldings(dummyData.holdings))
@@ -73,7 +75,7 @@ const Portfolio = () => {
               containerStyle={{
                 marginTop: SIZES.radius
               }}
-              chartPrices={myHoldings[0]?.sparkline_in_7d?.value}
+              chartPrices={selectedCoin ? selectedCoin.sparkline_in_7d?.value : myHoldings[0]?.sparkline_in_7d?.value}
             />
             <FlatList
              data={myHoldings}
@@ -109,12 +111,21 @@ const Portfolio = () => {
                   </View>
               </View>
             }
+            ListFooterComponent={
+              <View style={{
+                marginBottom: 50
+              }}>
+
+              </View>
+            }
             renderItem={({item}) => {
               return (
                   <TouchableOpacity style={{
                     flexDirection: 'row',
                     height: 55
-                  }}>
+                  }}
+                  onPress={() => setSelectedCoin(item)}
+                  >
 
                   <View style={{
                     flex: 1,
@@ -145,6 +156,27 @@ const Portfolio = () => {
                         alignItems: 'center',
                         justifyContent: 'flex-end'
                       }}>
+                         {
+                           item.price_change_percentage_7d_in_currency !== 0 && (
+                            <Image
+                              source={icons.upArrow}
+                              style={{
+                                  width: 10,
+                                  height: 10,
+                                  alignSelf: 'center',
+                                  tintColor: (item.price_change_percentage_7d_in_currency > 0) ? COLORS.lightGreen : COLORS.red,
+                                  transform: (item.price_change_percentage_7d_in_currency > 0) ? [{ rotate: '45deg'}] : [{ rotate: '125deg'}]
+                              }}
+                          />
+                           )
+                         }
+
+                      <Text style={{
+                        ...FONTS.h4,
+                        lineHeight: 15,
+                        textAlign: 'right',
+                        color: priceColor(item)
+                      }}> ${item.price_change_percentage_7d_in_currency.toFixed(2)}%</Text>
 
                       </View>
                   </View>
@@ -152,8 +184,21 @@ const Portfolio = () => {
                       <View style={{
                         flex: 1,
                         justifyContent: 'center',
-                      }}>
-
+                       }}>
+                          <Text style={{
+                            ...FONTS.h4,
+                            lineHeight: 15,
+                            textAlign: 'right',
+                            color: COLORS.white
+                          }}>${item.total.toFixed(2).toLocaleString()}</Text>
+                          <Text style={{
+                            textAlign: 'right',
+                            color: COLORS.lightGray3,
+                            lineHeight: 15,
+                            ...FONTS.body5
+                          }}>
+                            {item.qty} {item.symbol.toUpperCase()}
+                          </Text>
                       </View>
 
                   </TouchableOpacity>
