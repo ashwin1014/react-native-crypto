@@ -3,3 +3,4 @@ export { default as IconTextButton } from './IconTextButton';
 export { default as BalanceInfo } from './BalanceInfo';
 export { default as Chart } from './Chart';
 export { default as HeaderBar } from './HeaderBar';
+export { default as TagButton } from './TagButton';
