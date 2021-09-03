@@ -10,6 +10,8 @@ import { TabIcon } from '../components';
 import { COLORS, icons } from "../constants"
 import { setTradeModalVisibility } from '../stores/tab/tabActions';
 
+// import TableDemo from '../screens/FixedTable';
+
 const Tab = createBottomTabNavigator();
 
 const TabBarCustomButton = ({children, isTradeModalVisible}) => {
